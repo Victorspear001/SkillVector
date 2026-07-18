@@ -14,11 +14,18 @@ export async function POST(request: Request) {
     if (embedding) {
       searchVector = embedding;
     } else if (analysisId) {
-      // Logic to fetch embedding from 'analyses' table could go here
-      // For this MVP, we assume the client passes the embedding or we handle it
-      return NextResponse.json({ error: "analysisId lookup not implemented yet" }, { status: 400 });
+      // Lookup the analysis in the DB to retrieve the user's embedding
+      const { eq } = await import("drizzle-orm");
+      const { analyses } = await import("@/lib/db/schema");
+      
+      const results = await db.select().from(analyses).where(eq(analyses.id, analysisId));
+      if (results.length === 0) {
+        return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
+      }
+      
+      searchVector = results[0].user_embedding as number[];
     } else {
-      return NextResponse.json({ error: "Missing embedding" }, { status: 400 });
+      return NextResponse.json({ error: "Missing embedding or analysisId" }, { status: 400 });
     }
 
     // Convert number[] to string for the SQL query

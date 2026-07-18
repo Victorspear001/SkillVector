@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "SkillVector | AI-Powered Universal Resume Analyzer",
+  title: "ZenithSkill | AI-Powered Universal Resume Analyzer",
   description: "Analyze your resume across industries using advanced semantic vector matching.",
 };
 
@@ -21,9 +21,9 @@ export default function RootLayout({
           <div className="container mx-auto px-4 h-16 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl">
-                S
+                Z
               </div>
-              <span className="font-bold text-xl tracking-tight">SkillVector</span>
+              <span className="font-bold text-xl tracking-tight">ZenithSkill</span>
             </div>
             <nav className="flex items-center gap-6 text-sm font-medium">
               <a href="/" className="hover:text-primary transition-colors">Home</a>
