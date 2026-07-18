@@ -16,7 +16,7 @@ function getGenAI() {
 
 export function getGeminiFlashModel() {
   if (!_flashModel) {
-    _flashModel = getGenAI().getGenerativeModel({ model: "gemini-2.5-flash" });
+    _flashModel = getGenAI().getGenerativeModel({ model: "gemini-3.5-flash" });
   }
   return _flashModel;
 }

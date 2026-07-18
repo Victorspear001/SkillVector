@@ -23,12 +23,14 @@ export async function POST(request: Request) {
     const parsedResume = await parseResumeBase64(base64Data, file.type || 'application/pdf');
 
     
-    // Combine skills and experience for vector embedding
-    const searchString = [
-      ...parsedResume.skills,
-      ...parsedResume.certifications,
-      ...parsedResume.experience.map(e => `${e.role} ${e.description}`)
-    ].join(" ");
+    const searchParts = [];
+    if (parsedResume.skills?.length) searchParts.push(...parsedResume.skills);
+    if (parsedResume.certifications?.length) searchParts.push(...parsedResume.certifications);
+    if (parsedResume.experience?.length) {
+      searchParts.push(...parsedResume.experience.map(e => `${e.role} ${e.description}`));
+    }
+    
+    const searchString = searchParts.join(" ").trim() || "Entry Level Professional Resume";
 
     const embedding = await generateEmbedding(searchString);
 
