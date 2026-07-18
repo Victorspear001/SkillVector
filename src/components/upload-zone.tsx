@@ -25,6 +25,11 @@ export function UploadZone({ onUploadSuccess }: UploadZoneProps) {
       return;
     }
     
+    if (file.size > 4 * 1024 * 1024) {
+      setError("File is too large. Maximum size is 4MB.");
+      return;
+    }
+    
     setError(null);
     setIsUploading(true);
 
@@ -105,7 +110,7 @@ export function UploadZone({ onUploadSuccess }: UploadZoneProps) {
         {!isUploading && (
           <div className="mt-6 flex items-center gap-2 text-sm font-medium text-foreground bg-background px-4 py-2 rounded-full shadow-sm border border-border">
             <FileText className="w-4 h-4" />
-            PDF up to 5MB
+            PDF up to 4MB
           </div>
         )}
 

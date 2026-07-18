@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const base64Data = buffer.toString("base64");
     
     // AI Parsing natively from PDF via Gemini
-    const parsedResume = await parseResumeBase64(base64Data, file.type || 'application/pdf');
+    const parsedResume = await parseResumeBase64(base64Data, "application/pdf");
 
     
     const searchParts = [];

@@ -16,6 +16,7 @@ export async function parseResumeBase64(base64Data: string, mimeType: string): P
         { "degree": "string", "institution": "string", "year": "string" }
       ]
     }
+    IMPORTANT: If you cannot read the document, or if it contains no relevant information, return the JSON structure with empty arrays. Do not return any conversational text.
   `;
 
   try {
