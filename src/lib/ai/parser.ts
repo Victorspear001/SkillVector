@@ -1,9 +1,9 @@
 import { geminiFlashModel } from "./gemini";
 import type { ParsedResume, GapAnalysis } from "../types";
 
-export async function parseResume(rawText: string): Promise<ParsedResume> {
+export async function parseResumeBase64(base64Data: string, mimeType: string): Promise<ParsedResume> {
   const prompt = `
-    Extract a comprehensive list of skills, certifications, experience, and education from this resume.
+    Extract a comprehensive list of skills, certifications, experience, and education from this resume document.
     Recognize terms from any industry.
     Return ONLY a structured JSON object conforming strictly to the following structure:
     {
@@ -16,12 +16,18 @@ export async function parseResume(rawText: string): Promise<ParsedResume> {
         { "degree": "string", "institution": "string", "year": "string" }
       ]
     }
-    Resume text:
-    ${rawText}
   `;
 
   try {
-    const result = await geminiFlashModel.generateContent(prompt);
+    const result = await geminiFlashModel.generateContent([
+      {
+        inlineData: {
+          data: base64Data,
+          mimeType: mimeType,
+        },
+      },
+      prompt,
+    ]);
     const responseText = result.response.text();
     // Try to safely parse the JSON block from the output
     const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) || responseText.match(/{[\s\S]*}/);

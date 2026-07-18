@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const maxDuration = 60;
 import { generateEmbedding } from "@/lib/ai/embeddings";
 
 export async function POST(request: Request) {

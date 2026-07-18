@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-// @ts-expect-error: pdf-parse/lib/pdf-parse has no typings
-import pdf from "pdf-parse/lib/pdf-parse";
-import { parseResume } from "@/lib/ai/parser";
+
+export const maxDuration = 60;
+
+import { parseResumeBase64 } from "@/lib/ai/parser";
 import { generateEmbedding } from "@/lib/ai/embeddings";
 import { db } from "@/lib/db";
 import { analyses } from "@/lib/db/schema";
@@ -16,17 +17,11 @@ export async function POST(request: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const base64Data = buffer.toString("base64");
     
-    // Extract text from PDF
-    const pdfData = await pdf(buffer);
-    const text = pdfData.text;
+    // AI Parsing natively from PDF via Gemini
+    const parsedResume = await parseResumeBase64(base64Data, file.type || 'application/pdf');
 
-    if (!text || text.trim() === "") {
-      return NextResponse.json({ error: "Could not extract text from PDF" }, { status: 400 });
-    }
-
-    // AI Parsing
-    const parsedResume = await parseResume(text);
     
     // Combine skills and experience for vector embedding
     const searchString = [

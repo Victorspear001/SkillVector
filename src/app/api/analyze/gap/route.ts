@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+export const maxDuration = 60;
 import { analyzeGap } from "@/lib/ai/parser";
 import { db } from "@/lib/db";
 import { jobs, analyses } from "@/lib/db/schema";
